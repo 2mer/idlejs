@@ -1,79 +1,63 @@
-import {
-	Badge,
-	Button,
-	Card,
-	Divider,
-	Group,
-	HoverCard,
-	Stack,
-	Title,
-} from '@mantine/core';
-import { RotateClockwise } from 'tabler-icons-react';
-import { createCurrencyBadges } from '../state/currency';
+import { Box, Button, Card, Code, Divider, Group, Stack } from '@mantine/core';
+import SubmitHistoryGraph from './SubmitHistoryGraph';
+import TaskInfo from './TaskInfo';
 
 function SubmitCard({
 	children,
-	title,
-	header,
+	prompt,
 	onSubmit,
-	example,
+	task,
+	history,
 	loading = false,
-
-	cooldown,
-	payout = undefined as any,
 }) {
 	return (
-		<Card shadow='sm' p='lg' radius='md' withBorder>
+		<Card
+			shadow='sm'
+			p='lg'
+			radius='md'
+			withBorder
+			task-type={task.id}
+			className='Task'
+		>
 			<Group position='apart'>
 				<Stack w='100%'>
+					{/* header section */}
 					<Stack w='100%'>
-						<Group position='apart'>
-							<HoverCard
-								width='fit-content'
-								shadow='md'
-								withinPortal
-								position='bottom-start'
-							>
-								<HoverCard.Target>
-									<Title order={3}>{title}</Title>
-								</HoverCard.Target>
-								<HoverCard.Dropdown>
-									{example}
-								</HoverCard.Dropdown>
-							</HoverCard>
-
-							<Group>
-								<Badge
-									leftSection={
-										<RotateClockwise
-											size={16}
-											style={{ display: 'flex' }}
-										/>
-									}
-								>
-									{cooldown}
-								</Badge>
-								{payout && createCurrencyBadges(payout)}
-							</Group>
-						</Group>
-						{header}
+						<TaskInfo task={task} />
+						{prompt}
 					</Stack>
+
 					<Card.Section>
 						<Divider />
 					</Card.Section>
+
+					{/* input section */}
 					<Stack>
 						{children}
-						<Button
-							variant='light'
-							color='blue'
-							fullWidth
-							mt='md'
-							radius='md'
-							onClick={onSubmit}
-							loading={loading}
-						>
-							SUBMIT
-						</Button>
+						<Group noWrap mt='md'>
+							<Code style={{ padding: 0 }}>
+								<Box
+									sx={{
+										position: 'relative',
+										width: '50px',
+										height: '36px',
+									}}
+								>
+									<SubmitHistoryGraph history={history} />
+								</Box>
+							</Code>
+
+							<Button
+								variant='light'
+								color='blue'
+								fullWidth
+								radius='md'
+								onClick={onSubmit}
+								loading={loading}
+							>
+								SUBMIT
+							</Button>
+						</Group>
 					</Stack>
 				</Stack>
 			</Group>

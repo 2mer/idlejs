@@ -1,14 +1,24 @@
-import Duration from './Duration';
+import { Money } from '../state/currency';
 
-export default class Task<T> {
+export default abstract class Task<P, K> {
 	id: string = '';
-	hint: any = '';
+	name: any = '';
+	solution: K;
+	prompt: P;
+	example: any;
+	reward: Money = [];
 
 	submitDuration = 0;
 
-	constructor() {}
+	constructor() {
+		this.prompt = this.generatePrompt();
+		this.solution = this.solve(this.prompt);
+	}
 
-	validate(form: T) {
+	abstract generatePrompt(): P;
+	abstract solve(prompt: P): K;
+
+	validate(form: any) {
 		return false;
 	}
 }

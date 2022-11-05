@@ -1,21 +1,21 @@
 import { TextInput } from '@mantine/core';
 import Task from './task';
 import SubmitCard from '../../components/SubmitCard';
-import { GREEN } from '../../state/currency';
 import useTextTask from '../../hooks/useTextTask';
+import TextTaskExample from '../../components/TextTaskExample';
 
-const payout = [GREEN.create(1)];
+const generate = () => new Task();
 
 export default function () {
 	const { answer, props } = useTextTask({
-		generate: () => new Task(),
-		payout,
+		generate,
+		example: <TextTaskExample generate={generate} />,
 	});
 
 	const { loading } = props;
 
 	return (
-		<SubmitCard title='Match' {...props}>
+		<SubmitCard {...props}>
 			<TextInput
 				label='input'
 				value={answer.value}
